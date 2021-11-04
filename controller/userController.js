@@ -20,9 +20,10 @@ exports.postUserLogin = (req, res, next) => {
         response_message.message = errorMsg
         res.json(response_message)
     } else {
-        sqlClient.execute("SELECT * FROM `users` WHERE `email`=?", [email])
+        sqlClient.execute("INSERT INTO login(`userName`,`userPassword`) VALUES (?,?)", [email,id])
             .then(([sqlResult, mata]) => {
                 console.log(sqlResult)
+
                 if (sqlResult.length <= 0) {
                     response_message.success = false
                     response_message.message = "Email or Password is incorrect!"
@@ -36,18 +37,17 @@ exports.postUserLogin = (req, res, next) => {
                                     //password is correct
                                     const JWTData = {
                                         user_id: sqlResult[0].UID,
-                                        firstName: sqlResult[0].FirstName,
-                                        lastName: sqlResult[0].LastName,
-                                        email: sqlResult[0].Email
                                     }
+
                                     console.log(JWTData)
                                     const user_jwt = jwt.sign(JWTData, process.env.JWT_KEY, {
                                         expiresIn: "30m"
                                     })
 
-                                    const cookie_option = {
-                                        expires: new Date(Date.now() + process.env.COOKIE_EXPIRED * 60 * 1000)
-                                    }
+                                    // const cookie_option = {
+                                    //     expires: new Date(Date.now() + process.env.COOKIE_EXPIRED * 60 * 1000)
+                                    // }
+                                    
                                     response_message.success = true
                                     response_message.message = "user logined in"
                                         //   res.header('Access-Control-Allow-Credentials', true)
@@ -96,10 +96,11 @@ exports.postUserSignUp = (req, res, next) => {
         res.json(response_message)
     } else {
         //bcrypt password and insert into database
+        
         bcrypt.hash(password, 10)
             .then(value => {
                 console.log(value)
-                return sqlClient.execute("INSERT INTO `users`(`Email`,`Password`,`FirstName`,`LastName`) VALUES(?,?,?,?)", [email, value, firstName, lastName])
+                return sqlClient.execute("INSERT INTO `users`(`email`,`password`) VALUES(?,?)", [email, value])
             })
             .then(([sqlResult, meta]) => {
                 console.log(sqlResult)
@@ -161,7 +162,7 @@ exports.checkAuth = (req, res, next) => {
                 })
         } catch (err) {
             response_message.auth = false
-            response_message.message = "unkown error"
+            response_message.message = "unknown error"
             res.json(response_message)
         }
 

@@ -55,19 +55,19 @@ route.post("/signup", [check('email')
         }
         return true
     }),
-    body('firstName')
-    .trim()
-    .isAlphanumeric()
-    .withMessage("FirstName contains only letters and numbers")
-    .isLength({ max: 12 })
-    .withMessage("Your First Name is too long. FirstName must be at most 12 characters."),
+    // body('firstName')
+    // .trim()
+    // .isAlphanumeric()
+    // .withMessage("FirstName contains only letters and numbers")
+    // .isLength({ max: 12 })
+    // .withMessage("Your First Name is too long. FirstName must be at most 12 characters."),
 
-    body("lastName")
-    .trim()
-    .isAlphanumeric()
-    .withMessage("LastName contains only letters and numbers")
-    .isLength({ max: 12 })
-    .withMessage("Your LirstName is too long. FirstName must be at most 12 characters.")
+    // body("lastName")
+    // .trim()
+    // .isAlphanumeric()
+    // .withMessage("LastName contains only letters and numbers")
+    // .isLength({ max: 12 })
+    // .withMessage("Your LirstName is too long. FirstName must be at most 12 characters.")
 ], controller.postUserSignUp)
 route.post("/signout", controller.postUserLogOut)
 
