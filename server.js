@@ -16,7 +16,7 @@ server.get("/",(req,res)=>{
     res.send("Tesing")
 })
 
-server.use("/api",require("./router/userRoute"))
+// server.use("/api",require("./router/userRoute"))
 
 // server.("/api/", (req, res, next) => {
 //     req.
@@ -27,6 +27,6 @@ server.use("/api",require("./router/userRoute"))
 // })
 
 
-http.createServer(server).listen(8081, "127.0.0.1", () => {
+http.createServer(server).listen(8081, () => {
     console.log("server is on")
 })
